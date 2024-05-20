@@ -27,6 +27,6 @@ func PrintHostInfo() error {
 		return err
 	}
 	fmt.Printf("disk_root_free_gb=%.2f\n", info.Disk.RootFreeGB)
-	fmt.Printf("disk_root_percent=%.2f\n", info.Disk.RootFreePercent)
+	fmt.Printf("disk_root_free_percent=%.2f\n", info.Disk.RootFreePercent)
 	return nil
 }
