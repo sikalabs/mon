@@ -14,3 +14,7 @@ mon
 *.exe
 /dist/**
 cobra-docs
+
+# Application
+mon.yml
+!mon.example.yml
