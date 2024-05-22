@@ -3,7 +3,7 @@ package disk
 import "syscall"
 
 type DataInfo struct {
-	RootFreeGB float64
+	RootFreeGB      float64
 	RootFreePercent float64
 }
 
@@ -14,12 +14,12 @@ func GetDiskInfo() (DataInfo, error) {
 	}
 
 	return DataInfo{
-		RootFreeGB: freeSpaceGB,
+		RootFreeGB:      freeSpaceGB,
 		RootFreePercent: freeSpacePercentage,
 	}, nil
 }
 
-func getFreeSpaceGB(path string) (float64,float64, error) {
+func getFreeSpaceGB(path string) (float64, float64, error) {
 	var stat syscall.Statfs_t
 
 	// Get the filesystem statistics
