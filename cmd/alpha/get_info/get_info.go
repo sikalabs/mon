@@ -9,9 +9,9 @@ import (
 )
 
 var Cmd = &cobra.Command{
-	Use:     "get-info",
-	Short:   "Get Info",
-	Args:    cobra.NoArgs,
+	Use:   "get-info",
+	Short: "Get Info",
+	Args:  cobra.NoArgs,
 	Run: func(c *cobra.Command, args []string) {
 		err := collect.PrintHostInfo()
 		if err != nil {
