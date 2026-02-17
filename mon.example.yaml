@@ -5,3 +5,11 @@ notifications:
     smtp_username: XXX
     smtp_password: XXX
     smtp_email_from: noreply-mon-dev@sikademo.com
+    emails_to:
+      - XXX
+      - XXX
+  telegram:
+    token: XXX
+    chat_ids:
+      - XXX
+      - XXX
