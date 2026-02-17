@@ -31,6 +31,7 @@ var Cmd = &cobra.Command{
 		body += "\n"
 		_, out := http_checks.RunHttpChecks(config)
 		body += out
+		fmt.Println()
 
 		err = notify.SendEmailNotification(config, hostname, body)
 		error_utils.HandleError(err)
