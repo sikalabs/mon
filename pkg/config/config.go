@@ -1,7 +1,6 @@
 package config
 
 import (
-	"strconv"
 	"strings"
 
 	"github.com/spf13/viper"
@@ -13,28 +12,28 @@ type HTTPCheck struct {
 
 type Config struct {
 	Meta struct {
-		Version int
-	}
+		Version int `mapstructure:"version"`
+	} `mapstructure:"meta"`
 	Notifications struct {
-		SendOK bool
+		SendOK bool `mapstructure:"send_ok"`
 		Mail   struct {
-			SMTPHost      string
-			SMTPPort      int
-			SMTPUsername  string
-			SMTPPassword  string
-			SMTPEmailFrom string
-			EmailsTo      []string
-		}
+			SMTPHost      string   `mapstructure:"smtp_host"`
+			SMTPPort      int      `mapstructure:"smtp_port"`
+			SMTPUsername  string   `mapstructure:"smtp_username"`
+			SMTPPassword  string   `mapstructure:"smtp_password"`
+			SMTPEmailFrom string   `mapstructure:"smtp_email_from"`
+			EmailsTo      []string `mapstructure:"emails_to"`
+		} `mapstructure:"mail"`
 		Telegram struct {
-			Token   string
-			ChatIDs []int64
-		}
-	}
-	HTTPChecks   []HTTPCheck
+			Token   string  `mapstructure:"token"`
+			ChatIDs []int64 `mapstructure:"chat_ids"`
+		} `mapstructure:"telegram"`
+	} `mapstructure:"notifications"`
+	HTTPChecks   []HTTPCheck `mapstructure:"http_checks"`
 	LegacyLimits struct {
-		RootDiskFreeGB      int
-		RootDiskFreePercent int
-	}
+		RootDiskFreeGB      int `mapstructure:"root_disk_free_gb"`
+		RootDiskFreePercent int `mapstructure:"root_disk_free_percent"`
+	} `mapstructure:"legacy_limits"`
 }
 
 func LoadConfig() Config {
@@ -45,56 +44,13 @@ func LoadConfig() Config {
 
 	viper.SetEnvPrefix("mon")
 	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
+	viper.AutomaticEnv()
 
-	// notifications
-	viper.BindEnv(MON_NOTIFICATIONS_SEND_OK)
-
-	// email
-	viper.BindEnv(MON_NOTIFICATIONS_EMAIL_SMTP_HOST)
-	viper.BindEnv(MON_NOTIFICATIONS_EMAIL_SMTP_PORT)
-	viper.BindEnv(MON_NOTIFICATIONS_EMAIL_SMTP_USERNAME)
-	viper.BindEnv(MON_NOTIFICATIONS_EMAIL_SMTP_PASSWORD)
-	viper.BindEnv(MON_NOTIFICATIONS_EMAIL_SMTP_EMAIL_FROM)
-	viper.BindEnv(MON_NOTIFICATIONS_EMAIL_EMAILS_TO)
-
-	// telegram
-	viper.BindEnv(MON_NOTIFICATIONS_TELEGRAM_TOKEN)
-	viper.BindEnv(MON_NOTIFICATIONS_TELEGRAM_CHAT_IDS)
-
-	// legacy limits
-	viper.SetDefault(MON_LEGACY_LIMITS_ROOT_DISK_FREE_GB, 5)
-	viper.BindEnv(MON_LEGACY_LIMITS_ROOT_DISK_FREE_GB)
-	viper.SetDefault(MON_LEGACY_LIMITS_ROOT_DISK_FREE_PERCENT, 10)
-	viper.BindEnv(MON_LEGACY_LIMITS_ROOT_DISK_FREE_PERCENT)
+	viper.SetDefault("legacy_limits.root_disk_free_gb", 5)
+	viper.SetDefault("legacy_limits.root_disk_free_percent", 10)
 
 	var c Config
-
-	// notifications
-	c.Notifications.SendOK = viper.GetBool(MON_NOTIFICATIONS_SEND_OK)
-
-	// email
-	c.Notifications.Mail.SMTPHost = viper.GetString(MON_NOTIFICATIONS_EMAIL_SMTP_HOST)
-	c.Notifications.Mail.SMTPPort = viper.GetInt(MON_NOTIFICATIONS_EMAIL_SMTP_PORT)
-	c.Notifications.Mail.SMTPUsername = viper.GetString(MON_NOTIFICATIONS_EMAIL_SMTP_USERNAME)
-	c.Notifications.Mail.SMTPPassword = viper.GetString(MON_NOTIFICATIONS_EMAIL_SMTP_PASSWORD)
-	c.Notifications.Mail.SMTPEmailFrom = viper.GetString(MON_NOTIFICATIONS_EMAIL_SMTP_EMAIL_FROM)
-	c.Notifications.Mail.EmailsTo = viper.GetStringSlice(MON_NOTIFICATIONS_EMAIL_EMAILS_TO)
-
-	// telegram
-	c.Notifications.Telegram.Token = viper.GetString(MON_NOTIFICATIONS_TELEGRAM_TOKEN)
-	for _, s := range viper.GetStringSlice(MON_NOTIFICATIONS_TELEGRAM_CHAT_IDS) {
-		id, err := strconv.ParseInt(s, 10, 64)
-		if err == nil {
-			c.Notifications.Telegram.ChatIDs = append(c.Notifications.Telegram.ChatIDs, id)
-		}
-	}
-
-	// http_checks
-	viper.UnmarshalKey(MON_HTTP_CHECKS, &c.HTTPChecks)
-
-	// legacy limits
-	c.LegacyLimits.RootDiskFreeGB = viper.GetInt(MON_LEGACY_LIMITS_ROOT_DISK_FREE_GB)
-	c.LegacyLimits.RootDiskFreePercent = viper.GetInt(MON_LEGACY_LIMITS_ROOT_DISK_FREE_PERCENT)
+	viper.Unmarshal(&c)
 
 	return c
 }
