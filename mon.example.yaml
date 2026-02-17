@@ -13,3 +13,7 @@ notifications:
     chat_ids:
       - XXX
       - XXX
+http_checks:
+  - url: https://ondrejsika.com
+  - url: https://sika.io
+  - url: https://sikalabs.com

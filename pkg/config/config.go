@@ -7,6 +7,10 @@ import (
 	"github.com/spf13/viper"
 )
 
+type HTTPCheck struct {
+	URL string `mapstructure:"url"`
+}
+
 type Config struct {
 	Meta struct {
 		Version int
@@ -25,6 +29,7 @@ type Config struct {
 			ChatIDs []int64
 		}
 	}
+	HTTPChecks []HTTPCheck
 }
 
 func LoadConfig() Config {
@@ -66,6 +71,9 @@ func LoadConfig() Config {
 			c.Notifications.Telegram.ChatIDs = append(c.Notifications.Telegram.ChatIDs, id)
 		}
 	}
+
+	// http_checks
+	viper.UnmarshalKey(MON_HTTP_CHECKS, &c.HTTPChecks)
 
 	return c
 }

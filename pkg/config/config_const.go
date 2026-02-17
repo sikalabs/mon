@@ -11,4 +11,6 @@ const (
 
 	MON_NOTIFICATIONS_TELEGRAM_TOKEN    = "notifications.telegram.token"
 	MON_NOTIFICATIONS_TELEGRAM_CHAT_IDS = "notifications.telegram.chat_ids"
+
+	MON_HTTP_CHECKS = "http_checks"
 )
