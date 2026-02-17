@@ -2,6 +2,7 @@ package cmd
 
 import (
 	_ "github.com/sikalabs/mon/cmd/alpha"
+	_ "github.com/sikalabs/mon/cmd/install"
 	_ "github.com/sikalabs/mon/cmd/alpha/run"
 	_ "github.com/sikalabs/mon/cmd/alpha/get_info"
 	"github.com/sikalabs/mon/cmd/root"
