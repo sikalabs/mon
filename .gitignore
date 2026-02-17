@@ -8,6 +8,7 @@
 # Generic
 *.log
 *.backup
+Makefile.local.mk
 
 # Go
 mon
