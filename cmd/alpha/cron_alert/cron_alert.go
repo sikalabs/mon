@@ -2,13 +2,13 @@ package cron_alert
 
 import (
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/sikalabs/mon/cmd/alpha"
 	"github.com/sikalabs/mon/pkg/alert"
 	"github.com/sikalabs/mon/pkg/config"
 	"github.com/sikalabs/mon/pkg/notify"
+	"github.com/sikalabs/slu/pkg/utils/error_utils"
 	"github.com/spf13/cobra"
 )
 
@@ -19,28 +19,22 @@ var Cmd = &cobra.Command{
 	Run: func(c *cobra.Command, args []string) {
 		config := config.LoadConfig()
 		hostname, err := os.Hostname()
-		handleError(err)
+		error_utils.HandleError(err)
 
 		alerts, err := alert.GetAlert()
-		handleError(err)
+		error_utils.HandleError(err)
 
 		body := alert.SprintAlerts(alerts)
 		fmt.Print(body)
 
 		err = notify.SendEmailNotification(config, hostname, body)
-		handleError(err)
+		error_utils.HandleError(err)
 
 		err = notify.SendTelegramNotification(config, hostname, body)
-		handleError(err)
+		error_utils.HandleError(err)
 	},
 }
 
 func init() {
 	alpha.Cmd.AddCommand(Cmd)
-}
-
-func handleError(err error) {
-	if err != nil {
-		log.Fatalln(err)
-	}
 }
