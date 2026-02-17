@@ -42,6 +42,18 @@ func RunOrDie() {
 
 	fmt.Print(body)
 
+	isErrorInAlerts := false
+	for _, alert := range alertsV2 {
+		if !alert.OK {
+			isErrorInAlerts = true
+			continue
+		}
+	}
+
+	if isErrorInAlerts == false && config.Notifications.SendOK == false {
+		return
+	}
+
 	err = notify.SendEmailNotification(config, hostname, body)
 	error_utils.HandleError(err)
 
