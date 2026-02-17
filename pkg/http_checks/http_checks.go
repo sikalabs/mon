@@ -2,37 +2,49 @@ package http_checks
 
 import (
 	"fmt"
-	"log"
 	"net/http"
+	"net/url"
 
+	"github.com/sikalabs/mon/pkg/alert_v2"
 	"github.com/sikalabs/mon/pkg/config"
 )
 
 func RunHttpChecks(
 	config config.Config,
-) (error, string) {
-	var failed []string
-	var out string
+) (error, []alert_v2.AlertV2) {
+	var alerts []alert_v2.AlertV2
 	for _, check := range config.HTTPChecks {
+		parsedURL, err := url.Parse(check.URL)
+		checkName := check.URL
+		if err == nil {
+			checkName = parsedURL.Host
+		}
 		resp, err := http.Get(check.URL)
 		if err != nil {
-			log.Printf("ERROR http check %s: %s\n", check.URL, err)
-			out += fmt.Sprintf("ERROR http check %s: %s\n", check.URL, err)
-			failed = append(failed, check.URL)
+			alerts = append(alerts, alert_v2.AlertV2{
+				CheckType:    "http",
+				CheckName:    checkName,
+				OK:           false,
+				ErrorMessage: fmt.Sprintf("ERROR http check %s: %s", check.URL, err),
+			})
 			continue
 		}
 		resp.Body.Close()
 		if resp.StatusCode < 200 || resp.StatusCode >= 300 {
-			log.Printf("ERROR http check %s: status %d\n", check.URL, resp.StatusCode)
-			out += fmt.Sprintf("ERROR http check %s: status %d\n", check.URL, resp.StatusCode)
-			failed = append(failed, check.URL)
+			alerts = append(alerts, alert_v2.AlertV2{
+				CheckType:    "http",
+				CheckName:    checkName,
+				OK:           false,
+				ErrorMessage: fmt.Sprintf("ERROR http check %s: status %d\n", check.URL, resp.StatusCode),
+			})
 			continue
 		}
-		log.Printf("OK http check %s: status %d\n", check.URL, resp.StatusCode)
-		out += fmt.Sprintf("OK http check %s: status %d\n", check.URL, resp.StatusCode)
+		alerts = append(alerts, alert_v2.AlertV2{
+			CheckType:    "http",
+			CheckName:    checkName,
+			OK:           true,
+			ErrorMessage: "",
+		})
 	}
-	if len(failed) > 0 {
-		return fmt.Errorf("http checks failed: %v", failed), out
-	}
-	return nil, out
+	return nil, alerts
 }
