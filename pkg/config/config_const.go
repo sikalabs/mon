@@ -2,6 +2,8 @@ package config
 
 const (
 	// mon.yaml schema
+	MON_NOTIFICATIONS_SEND_OK = "notifications.send_ok"
+
 	MON_NOTIFICATIONS_EMAIL_SMTP_HOST       = "notifications.mail.smtp_host"
 	MON_NOTIFICATIONS_EMAIL_SMTP_PORT       = "notifications.mail.smtp_port"
 	MON_NOTIFICATIONS_EMAIL_SMTP_USERNAME   = "notifications.mail.smtp_username"

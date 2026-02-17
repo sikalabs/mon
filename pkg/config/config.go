@@ -16,7 +16,8 @@ type Config struct {
 		Version int
 	}
 	Notifications struct {
-		Mail struct {
+		SendOK bool
+		Mail   struct {
 			SMTPHost      string
 			SMTPPort      int
 			SMTPUsername  string
@@ -41,6 +42,9 @@ func LoadConfig() Config {
 	viper.SetEnvPrefix("mon")
 	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 
+	// notifications
+	viper.BindEnv(MON_NOTIFICATIONS_SEND_OK)
+
 	// email
 	viper.BindEnv(MON_NOTIFICATIONS_EMAIL_SMTP_HOST)
 	viper.BindEnv(MON_NOTIFICATIONS_EMAIL_SMTP_PORT)
@@ -54,6 +58,9 @@ func LoadConfig() Config {
 	viper.BindEnv(MON_NOTIFICATIONS_TELEGRAM_CHAT_IDS)
 
 	var c Config
+
+	// notifications
+	c.Notifications.SendOK = viper.GetBool(MON_NOTIFICATIONS_SEND_OK)
 
 	// email
 	c.Notifications.Mail.SMTPHost = viper.GetString(MON_NOTIFICATIONS_EMAIL_SMTP_HOST)
