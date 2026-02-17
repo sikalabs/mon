@@ -7,6 +7,7 @@ import (
 	"github.com/sikalabs/mon/cmd/alpha"
 	"github.com/sikalabs/mon/pkg/alert"
 	"github.com/sikalabs/mon/pkg/config"
+	"github.com/sikalabs/mon/pkg/http_checks"
 	"github.com/sikalabs/mon/pkg/notify"
 	"github.com/sikalabs/slu/pkg/utils/error_utils"
 	"github.com/spf13/cobra"
@@ -26,6 +27,10 @@ var Cmd = &cobra.Command{
 
 		body := alert.SprintAlerts(alerts)
 		fmt.Print(body)
+
+		body += "\n"
+		_, out := http_checks.RunHttpChecks(config)
+		body += out
 
 		err = notify.SendEmailNotification(config, hostname, body)
 		error_utils.HandleError(err)
