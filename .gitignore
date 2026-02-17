@@ -11,7 +11,7 @@
 Makefile.local.mk
 
 # Go
-mon
+/mon
 *.exe
 /dist/**
 cobra-docs
