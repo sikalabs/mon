@@ -1,4 +1,5 @@
 notifications:
+  send_ok: false
   mail:
     smtp_host: email-smtp.eu-central-1.amazonaws.com
     smtp_port: 587
