@@ -5,13 +5,14 @@ import (
 
 	"github.com/ondrejsika/gosendmail/lib"
 	"github.com/sikalabs/mon/pkg/config"
+	"github.com/sikalabs/mon/version"
 	"github.com/sikalabs/slu/utils/telegram_utils"
 )
 
 func GetEmailFooter() string {
 	return `
 --
-mon
+mon, ` + version.Version + `
 `
 }
 
