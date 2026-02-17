@@ -1,4 +1,4 @@
-package cron_alert
+package run
 
 import (
 	"fmt"
@@ -14,7 +14,7 @@ import (
 )
 
 var Cmd = &cobra.Command{
-	Use:   "cron-alert",
+	Use:   "run",
 	Short: "Run alerting for cron",
 	Args:  cobra.NoArgs,
 	Run: func(c *cobra.Command, args []string) {
