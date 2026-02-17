@@ -5,6 +5,7 @@ import (
 	_ "github.com/sikalabs/mon/cmd/alpha/run"
 	_ "github.com/sikalabs/mon/cmd/alpha/get_info"
 	"github.com/sikalabs/mon/cmd/root"
+	_ "github.com/sikalabs/mon/cmd/server"
 	_ "github.com/sikalabs/mon/cmd/version"
 	"github.com/spf13/cobra"
 )
