@@ -1,3 +1,5 @@
+version: 2
+
 project_name: mon
 
 before:
@@ -37,7 +39,7 @@ builds:
     binary: mon
 
 archives:
-  - format: tar.gz
+  - formats: [ "tar.gz" ]
     name_template: "{{ .ProjectName }}_v{{ .Version }}_{{ .Os }}_{{ .Arch }}"
 
 release:
@@ -50,13 +52,13 @@ checksum:
 brews:
   -
     name: mon
-    tap:
+    repository:
       owner: sikalabs
       name: homebrew-tap
     skip_upload: auto
     homepage: https://github.com/sikalabs/mon
     url_template: "https://github.com/sikalabs/mon/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
-    folder: Formula
+    directory: Formula
     caveats: "How to use this binary: https://github.com/sikalabs/mon"
     description: "mon"
     install: |
@@ -70,6 +72,7 @@ dockers:
       goarch: amd64
       image_templates:
         - "sikalabs/mon:{{ .Tag }}"
+        - "ghcr.io/sikalabs/mon:{{ .Tag }}"
       dockerfile: Dockerfile.goreleaser
       ids:
         - mon
@@ -79,28 +82,31 @@ dockers:
         - "--label=org.opencontainers.image.title={{.ProjectName}}"
         - "--label=org.opencontainers.image.revision={{.FullCommit}}"
         - "--label=org.opencontainers.image.version={{.Version}}"
+        - "--label=org.opencontainers.image.source=https://github.com/sikalabs/mon"
         - "--label=org.label-schema.schema-version=1.0"
         - "--label=org.label-schema.version={{.Version}}"
         - "--label=org.label-schema.name={{.ProjectName}}"
         - "--label=com.github.actions.name={{.ProjectName}}"
         - "--label=repository=https://github.com/sikalabs/mon"
-        - "--label=maintainer=SikaLabs Opensource &lt;opensource@sikalabs.com&gt;"
+        - "--label=maintainer=SikaLabs <opensource@sikalabs.com>"
     - goos: linux
       goarch: arm64
       image_templates:
         - "sikalabs/mon:{{ .Tag }}-arm64v8"
+        - "ghcr.io/sikalabs/mon:{{ .Tag }}-arm64v8"
       dockerfile: Dockerfile.goreleaser.arm64v8
       ids:
-        - mon
+        - slu
       build_flag_templates:
         - "--platform=linux/arm64"
         - "--label=org.opencontainers.image.created={{.Date}}"
         - "--label=org.opencontainers.image.title={{.ProjectName}}"
         - "--label=org.opencontainers.image.revision={{.FullCommit}}"
         - "--label=org.opencontainers.image.version={{.Version}}"
+        - "--label=org.opencontainers.image.source=https://github.com/sikalabs/mon"
         - "--label=org.label-schema.schema-version=1.0"
         - "--label=org.label-schema.version={{.Version}}"
         - "--label=org.label-schema.name={{.ProjectName}}"
         - "--label=com.github.actions.name={{.ProjectName}}"
         - "--label=repository=https://github.com/sikalabs/mon"
-        - "--label=maintainer=SikaLabs Opensource &lt;opensource@sikalabs.com&gt;"
+        - "--label=maintainer=SikaLabs <opensource@sikalabs.com>"
