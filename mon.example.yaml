@@ -1,0 +1,7 @@
+notifications:
+  mail:
+    smtp_host: email-smtp.eu-central-1.amazonaws.com
+    smtp_port: 587
+    smtp_username: XXX
+    smtp_password: XXX
+    smtp_email_from: noreply-mon-dev@sikademo.com
