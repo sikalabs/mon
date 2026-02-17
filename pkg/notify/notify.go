@@ -5,6 +5,7 @@ import (
 
 	"github.com/ondrejsika/gosendmail/lib"
 	"github.com/sikalabs/mon/pkg/config"
+	"github.com/sikalabs/slu/utils/telegram_utils"
 )
 
 func GetEmailFooter() string {
@@ -29,6 +30,24 @@ func SendEmailNotification(
 			emailTo,
 			"[mon] Alert from "+hostname,
 			body+GetEmailFooter(),
+		)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func SendTelegramNotification(
+	config config.Config,
+	hostname string,
+	body string,
+) error {
+	for _, chatID := range config.Notifications.Telegram.ChatIDs {
+		err := telegram_utils.TelegramSendMessage(
+			config.Notifications.Telegram.Token,
+			chatID,
+			"[mon] Alert from "+hostname+"\n\n"+body+GetEmailFooter(),
 		)
 		if err != nil {
 			return err
