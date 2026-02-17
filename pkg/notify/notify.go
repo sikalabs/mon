@@ -19,15 +19,20 @@ func SendEmailNotification(
 	hostname string,
 	body string,
 ) error {
-	err := lib.GoSendMail(
-		config.Notifications.Mail.SMTPHost,
-		strconv.Itoa(config.Notifications.Mail.SMTPPort),
-		config.Notifications.Mail.SMTPUsername,
-		config.Notifications.Mail.SMTPPassword,
-		config.Notifications.Mail.SMTPEmailFrom,
-		"ondrejsika@ondrejsika.com",
-		"[mon] Alert from "+hostname,
-		body+GetEmailFooter(),
-	)
-	return err
+	for _, emailTo := range config.Notifications.Mail.EmailsTo {
+		err := lib.GoSendMail(
+			config.Notifications.Mail.SMTPHost,
+			strconv.Itoa(config.Notifications.Mail.SMTPPort),
+			config.Notifications.Mail.SMTPUsername,
+			config.Notifications.Mail.SMTPPassword,
+			config.Notifications.Mail.SMTPEmailFrom,
+			emailTo,
+			"[mon] Alert from "+hostname,
+			body+GetEmailFooter(),
+		)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
