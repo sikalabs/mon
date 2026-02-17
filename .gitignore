@@ -12,6 +12,7 @@ Makefile.local.mk
 
 # Go
 /mon
+/mon-linux-amd64
 *.exe
 /dist/**
 cobra-docs
