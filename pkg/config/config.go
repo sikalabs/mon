@@ -6,10 +6,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-type HTTPCheck struct {
-	URL string `mapstructure:"url"`
-}
-
 type Config struct {
 	Meta struct {
 		Version int `mapstructure:"version"`
@@ -29,7 +25,9 @@ type Config struct {
 			ChatIDs []int64 `mapstructure:"chat_ids"`
 		} `mapstructure:"telegram"`
 	} `mapstructure:"notifications"`
-	HTTPChecks   []HTTPCheck `mapstructure:"http_checks"`
+	HTTPChecks []struct {
+		URL string `mapstructure:"url"`
+	} `mapstructure:"http_checks"`
 	LegacyLimits struct {
 		RootDiskFreeGB      int `mapstructure:"root_disk_free_gb"`
 		RootDiskFreePercent int `mapstructure:"root_disk_free_percent"`
