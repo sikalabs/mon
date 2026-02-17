@@ -96,7 +96,7 @@ dockers:
         - "ghcr.io/sikalabs/mon:{{ .Tag }}-arm64v8"
       dockerfile: Dockerfile.goreleaser.arm64v8
       ids:
-        - slu
+        - mon
       build_flag_templates:
         - "--platform=linux/arm64"
         - "--label=org.opencontainers.image.created={{.Date}}"
