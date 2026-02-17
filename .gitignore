@@ -16,5 +16,7 @@ mon
 cobra-docs
 
 # Application
+mon.yaml
 mon.yml
+!mon.example.yaml
 !mon.example.yml
