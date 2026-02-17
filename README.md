@@ -17,3 +17,9 @@ Using brew
 ```
 brew install sikalabs/tap/mon
 ```
+
+## Configuration
+
+Create `./mon.yaml` or `/etc/mon/mon.yaml`.
+
+Check out the config file example [mon.example.yaml](./mon.example.yaml)
