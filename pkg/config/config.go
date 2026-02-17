@@ -30,7 +30,11 @@ type Config struct {
 			ChatIDs []int64
 		}
 	}
-	HTTPChecks []HTTPCheck
+	HTTPChecks   []HTTPCheck
+	LegacyLimits struct {
+		RootDiskFreeGB      int
+		RootDiskFreePercent int
+	}
 }
 
 func LoadConfig() Config {
@@ -57,6 +61,12 @@ func LoadConfig() Config {
 	viper.BindEnv(MON_NOTIFICATIONS_TELEGRAM_TOKEN)
 	viper.BindEnv(MON_NOTIFICATIONS_TELEGRAM_CHAT_IDS)
 
+	// legacy limits
+	viper.SetDefault(MON_LEGACY_LIMITS_ROOT_DISK_FREE_GB, 5)
+	viper.BindEnv(MON_LEGACY_LIMITS_ROOT_DISK_FREE_GB)
+	viper.SetDefault(MON_LEGACY_LIMITS_ROOT_DISK_FREE_PERCENT, 10)
+	viper.BindEnv(MON_LEGACY_LIMITS_ROOT_DISK_FREE_PERCENT)
+
 	var c Config
 
 	// notifications
@@ -81,6 +91,10 @@ func LoadConfig() Config {
 
 	// http_checks
 	viper.UnmarshalKey(MON_HTTP_CHECKS, &c.HTTPChecks)
+
+	// legacy limits
+	c.LegacyLimits.RootDiskFreeGB = viper.GetInt(MON_LEGACY_LIMITS_ROOT_DISK_FREE_GB)
+	c.LegacyLimits.RootDiskFreePercent = viper.GetInt(MON_LEGACY_LIMITS_ROOT_DISK_FREE_PERCENT)
 
 	return c
 }

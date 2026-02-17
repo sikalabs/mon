@@ -19,3 +19,6 @@ http_checks:
   - url: https://sika.io
   - url: https://sikalabs.com
   - url: https://sika.int
+legacy_limits:
+  root_disk_free_gb: 1 # default is 5
+  root_disk_free_percent: 1 # default is 10

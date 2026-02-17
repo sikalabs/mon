@@ -15,4 +15,7 @@ const (
 	MON_NOTIFICATIONS_TELEGRAM_CHAT_IDS = "notifications.telegram.chat_ids"
 
 	MON_HTTP_CHECKS = "http_checks"
+
+	MON_LEGACY_LIMITS_ROOT_DISK_FREE_GB      = "legacy_limits.root_disk_free_gb"
+	MON_LEGACY_LIMITS_ROOT_DISK_FREE_PERCENT = "legacy_limits.root_disk_free_percent"
 )

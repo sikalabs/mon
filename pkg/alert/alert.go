@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/sikalabs/mon/pkg/collect"
+	"github.com/sikalabs/mon/pkg/config"
 	"github.com/sikalabs/mon/pkg/config/limits"
 )
 
@@ -13,10 +14,13 @@ type Alert struct {
 	CurrentValueFloat64 float64
 }
 
-func GetAlert() ([]Alert, error) {
+func GetAlert(c config.Config) ([]Alert, error) {
 	alerts := []Alert{}
 
-	limits := limits.SikaLabsLimits()
+	limits := limits.Limits{
+		DiskRootFreeGB:      float64(c.LegacyLimits.RootDiskFreeGB),
+		DiskRootFreePercent: float64(c.LegacyLimits.RootDiskFreePercent),
+	}
 	info, err := collect.GetHostInfo()
 	if err != nil {
 		return alerts, err

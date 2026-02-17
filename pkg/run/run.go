@@ -17,7 +17,7 @@ func RunOrDie() {
 	hostname, err := os.Hostname()
 	error_utils.HandleError(err)
 
-	alerts, err := alert.GetAlert()
+	alerts, err := alert.GetAlert(config)
 	error_utils.HandleError(err)
 
 	// Alerts (v1) to AlertsV2
