@@ -23,3 +23,15 @@ brew install sikalabs/tap/mon
 Create `./mon.yaml` or `/etc/mon/mon.yaml`.
 
 Check out the config file example [mon.example.yaml](./mon.example.yaml)
+
+## Install systemd mon.service
+
+```
+mon install
+```
+
+Test by
+
+```
+systemctl status mon.service
+```
