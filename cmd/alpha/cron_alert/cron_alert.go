@@ -29,6 +29,9 @@ var Cmd = &cobra.Command{
 
 		err = notify.SendEmailNotification(config, hostname, body)
 		handleError(err)
+
+		err = notify.SendTelegramNotification(config, hostname, body)
+		handleError(err)
 	},
 }
 
