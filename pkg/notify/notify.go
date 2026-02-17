@@ -20,11 +20,11 @@ func SendEmailNotification(
 	body string,
 ) error {
 	err := lib.GoSendMail(
-		config.SMTPHost,
-		strconv.Itoa(config.SMTPPort),
-		config.SMTPUsername,
-		config.SMTPPassword,
-		config.SMTPEmailFrom,
+		config.Notifications.Mail.SMTPHost,
+		strconv.Itoa(config.Notifications.Mail.SMTPPort),
+		config.Notifications.Mail.SMTPUsername,
+		config.Notifications.Mail.SMTPPassword,
+		config.Notifications.Mail.SMTPEmailFrom,
 		"ondrejsika@ondrejsika.com",
 		"[mon] Alert from "+hostname,
 		body+GetEmailFooter(),

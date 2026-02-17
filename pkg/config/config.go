@@ -1,13 +1,24 @@
 package config
 
-import "github.com/spf13/viper"
+import (
+	"strings"
+
+	"github.com/spf13/viper"
+)
 
 type Config struct {
-	SMTPHost      string
-	SMTPPort      int
-	SMTPUsername  string
-	SMTPPassword  string
-	SMTPEmailFrom string
+	Meta struct {
+		Version int
+	}
+	Notifications struct {
+		Mail struct {
+			SMTPHost      string
+			SMTPPort      int
+			SMTPUsername  string
+			SMTPPassword  string
+			SMTPEmailFrom string
+		}
+	}
 }
 
 func LoadConfig() Config {
@@ -16,18 +27,20 @@ func LoadConfig() Config {
 	viper.SetConfigType("yaml")
 	viper.ReadInConfig()
 
-	viper.SetEnvPrefix("MON")
-	viper.BindEnv("SMTP_HOST")
-	viper.BindEnv("SMTP_PORT")
-	viper.BindEnv("SMTP_USERNAME")
-	viper.BindEnv("SMTP_PASSWORD")
-	viper.BindEnv("SMTP_EMAIL_FROM")
+	viper.SetEnvPrefix("mon")
+	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 
-	return Config{
-		SMTPHost:      viper.GetString("SMTP_HOST"),
-		SMTPPort:      viper.GetInt("SMTP_PORT"),
-		SMTPUsername:  viper.GetString("SMTP_USERNAME"),
-		SMTPPassword:  viper.GetString("SMTP_PASSWORD"),
-		SMTPEmailFrom: viper.GetString("SMTP_EMAIL_FROM"),
-	}
+	viper.BindEnv(MON_NOTIFICATIONS_EMAIL_SMTP_HOST)
+	viper.BindEnv(MON_NOTIFICATIONS_EMAIL_SMTP_PORT)
+	viper.BindEnv(MON_NOTIFICATIONS_EMAIL_SMTP_USERNAME)
+	viper.BindEnv(MON_NOTIFICATIONS_EMAIL_SMTP_PASSWORD)
+	viper.BindEnv(MON_NOTIFICATIONS_EMAIL_SMTP_EMAIL_FROM)
+
+	var c Config
+	c.Notifications.Mail.SMTPHost = viper.GetString(MON_NOTIFICATIONS_EMAIL_SMTP_HOST)
+	c.Notifications.Mail.SMTPPort = viper.GetInt(MON_NOTIFICATIONS_EMAIL_SMTP_PORT)
+	c.Notifications.Mail.SMTPUsername = viper.GetString(MON_NOTIFICATIONS_EMAIL_SMTP_USERNAME)
+	c.Notifications.Mail.SMTPPassword = viper.GetString(MON_NOTIFICATIONS_EMAIL_SMTP_PASSWORD)
+	c.Notifications.Mail.SMTPEmailFrom = viper.GetString(MON_NOTIFICATIONS_EMAIL_SMTP_EMAIL_FROM)
+	return c
 }
