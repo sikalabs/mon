@@ -38,6 +38,7 @@ type Config struct {
 
 func LoadConfig() Config {
 	viper.AddConfigPath(".")
+	viper.AddConfigPath("/etc/mon")
 	viper.SetConfigName("mon")
 	viper.SetConfigType("yaml")
 	viper.ReadInConfig()
