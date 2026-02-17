@@ -17,3 +17,4 @@ http_checks:
   - url: https://ondrejsika.com
   - url: https://sika.io
   - url: https://sikalabs.com
+  - url: https://sika.int
