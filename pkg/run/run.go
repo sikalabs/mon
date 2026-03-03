@@ -9,6 +9,7 @@ import (
 	"github.com/sikalabs/mon/pkg/config"
 	"github.com/sikalabs/mon/pkg/http_checks"
 	"github.com/sikalabs/mon/pkg/notify"
+	"github.com/sikalabs/mon/pkg/tailscale"
 	"github.com/sikalabs/slu/pkg/utils/error_utils"
 )
 
@@ -37,6 +38,9 @@ func RunOrDie() {
 
 	_, http_alerts := http_checks.RunHttpChecks(config)
 	alertsV2 = append(alertsV2, http_alerts...)
+
+	_, tailscale_alerts := tailscale.RunTailscaleChecks(config)
+	alertsV2 = append(alertsV2, tailscale_alerts...)
 
 	body := alert_v2.SprintAlertsV2(alertsV2)
 

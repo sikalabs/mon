@@ -32,6 +32,9 @@ type Config struct {
 		RootDiskFreeGB      int `mapstructure:"root_disk_free_gb"`
 		RootDiskFreePercent int `mapstructure:"root_disk_free_percent"`
 	} `mapstructure:"legacy_limits"`
+	Tailscale struct {
+		Enabled bool `mapstructure:"enabled"`
+	} `mapstructure:"tailscale"`
 }
 
 func LoadConfig() Config {
