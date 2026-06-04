@@ -15,6 +15,10 @@ import (
 
 func RunOrDie() {
 	config := config.LoadConfig()
+	RunWithConfigOrDie(config)
+}
+
+func RunWithConfigOrDie(config config.Config) {
 	hostname, err := os.Hostname()
 	error_utils.HandleError(err)
 
